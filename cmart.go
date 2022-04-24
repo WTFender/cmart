@@ -239,11 +239,13 @@ type ExhibitionsFilter struct {
 
 type RestApi struct {
 	Baseurl string
+	Get     func(string, interface{})
 }
 
 func NewRestApi() RestApi {
 	var api RestApi
 	api.Baseurl = "https://openaccess-api.clevelandart.org/api"
+	api.Get = api.call
 	return api
 }
 
@@ -256,6 +258,58 @@ func (api RestApi) call(path string, response interface{}) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func (api RestApi) ListArtworks(filter ArtworksFilter) ([]Artwork, ResponseInfo) {
+	params := buildParams(filter)
+	var resp ArtworksResponse
+	path := fmt.Sprintf("/artworks/?%v", params)
+	api.Get(path, &resp)
+	return resp.Data, resp.Info
+}
+
+func (api RestApi) GetArtworkById(artwork_id int) Artwork {
+	var resp ArtworkResponse
+	path := fmt.Sprintf("/artworks/%v", artwork_id)
+	api.Get(path, &resp)
+	return resp.Data
+}
+
+func (api RestApi) GetArtworkByAccessionNbr(accession_nbr float64) Artwork {
+	var resp ArtworkResponse
+	path := fmt.Sprintf("/artworks/%v", accession_nbr)
+	api.Get(path, &resp)
+	return resp.Data
+}
+
+func (api RestApi) ListCreators(filter CreatorsFilter) ([]Creator, ResponseInfo) {
+	params := buildParams(filter)
+	var resp CreatorsResponse
+	path := fmt.Sprintf("/creators/?%v", params)
+	api.Get(path, &resp)
+	return resp.Data, resp.Info
+}
+
+func (api RestApi) GetCreatorById(creator_id int) Creator {
+	var resp CreatorResponse
+	path := fmt.Sprintf("/creators/%v", creator_id)
+	api.Get(path, &resp)
+	return resp.Data
+}
+
+func (api RestApi) ListExhibitions(filter ExhibitionsFilter) ([]Exhibition, ResponseInfo) {
+	params := buildParams(filter)
+	var resp ExhibitionsResponse
+	path := fmt.Sprintf("/exhibitions/?%v", params)
+	api.Get(path, &resp)
+	return resp.Data, resp.Info
+}
+
+func (api RestApi) GetExhibitionById(exhibit_id int) Exhibition {
+	var resp ExhibitionResponse
+	path := fmt.Sprintf("/exhibitions/%v", exhibit_id)
+	api.Get(path, &resp)
+	return resp.Data
 }
 
 func isDateParam(paramKey string) bool {
@@ -304,58 +358,6 @@ func buildParams(filter interface{}) string {
 	return params
 }
 
-func (api RestApi) ListArtworks(filter ArtworksFilter) ([]Artwork, ResponseInfo) {
-	params := buildParams(filter)
-	var resp ArtworksResponse
-	path := fmt.Sprintf("/artworks/?%v", params)
-	api.call(path, &resp)
-	return resp.Data, resp.Info
-}
-
-func (api RestApi) GetArtworkById(artwork_id int) Artwork {
-	var resp ArtworkResponse
-	path := fmt.Sprintf("/artworks/%v", artwork_id)
-	api.call(path, &resp)
-	return resp.Data
-}
-
-func (api RestApi) GetArtworkByAccessionNbr(accession_nbr float64) Artwork {
-	var resp ArtworkResponse
-	path := fmt.Sprintf("/artworks/%v", accession_nbr)
-	api.call(path, &resp)
-	return resp.Data
-}
-
-func (api RestApi) ListCreators(filter CreatorsFilter) ([]Creator, ResponseInfo) {
-	params := buildParams(filter)
-	var resp CreatorsResponse
-	path := fmt.Sprintf("/creators/?%v", params)
-	api.call(path, &resp)
-	return resp.Data, resp.Info
-}
-
-func (api RestApi) GetCreatorById(creator_id int) Creator {
-	var resp CreatorResponse
-	path := fmt.Sprintf("/creators/%v", creator_id)
-	api.call(path, &resp)
-	return resp.Data
-}
-
-func (api RestApi) ListExhibitions(filter ExhibitionsFilter) ([]Exhibition, ResponseInfo) {
-	params := buildParams(filter)
-	var resp ExhibitionsResponse
-	path := fmt.Sprintf("/exhibitions/?%v", params)
-	api.call(path, &resp)
-	return resp.Data, resp.Info
-}
-
-func (api RestApi) GetExhibitionById(exhibit_id int) Exhibition {
-	var resp ExhibitionResponse
-	path := fmt.Sprintf("/exhibitions/%v", exhibit_id)
-	api.call(path, &resp)
-	return resp.Data
-}
-
 func test(CMA RestApi) {
 	// Get an Artwork, Creator, or Exhibit by ID
 	artwork := CMA.GetArtworkById(111811)
@@ -368,25 +370,25 @@ func test(CMA RestApi) {
 	fmt.Println(exhibit.Title)
 
 	// List Artworks, Creators, and Exhibits; optionally apply filters
-	artworks, ameta := CMA.ListArtworks(ArtworksFilter{
+	artworks, _ := CMA.ListArtworks(ArtworksFilter{
 		Created_after:            2019,
 		African_american_artists: true,
 	})
-	if ameta.Total > 0 {
+	if len(artworks) > 0 {
 		fmt.Println(artworks[0].Title)
 	}
 
-	creators, cmeta := CMA.ListCreators(CreatorsFilter{
+	creators, _ := CMA.ListCreators(CreatorsFilter{
 		Birth_year_after: 1990,
 	})
-	if cmeta.Total > 0 {
+	if len(creators) > 0 {
 		fmt.Println(creators[0].Description)
 	}
 
-	exhibits, emeta := CMA.ListExhibitions(ExhibitionsFilter{
+	exhibits, _ := CMA.ListExhibitions(ExhibitionsFilter{
 		Opened_after: "2017-01-01",
 	})
-	if emeta.Total > 0 {
+	if len(exhibits) > 0 {
 		fmt.Println(exhibits[0].Title)
 	}
 }
