@@ -357,38 +357,3 @@ func buildParams(filter interface{}) string {
 	}
 	return params
 }
-
-func test(CMA RestApi) {
-	// Get an Artwork, Creator, or Exhibit by ID
-	artwork := CMA.GetArtworkById(111811)
-	fmt.Println(artwork.Title)
-
-	creator := CMA.GetCreatorById(1859)
-	fmt.Println(creator.Name)
-
-	exhibit := CMA.GetExhibitionById(312462)
-	fmt.Println(exhibit.Title)
-
-	// List Artworks, Creators, and Exhibits; optionally apply filters
-	artworks, _ := CMA.ListArtworks(ArtworksFilter{
-		Created_after:            2019,
-		African_american_artists: true,
-	})
-	if len(artworks) > 0 {
-		fmt.Println(artworks[0].Title)
-	}
-
-	creators, _ := CMA.ListCreators(CreatorsFilter{
-		Birth_year_after: 1990,
-	})
-	if len(creators) > 0 {
-		fmt.Println(creators[0].Description)
-	}
-
-	exhibits, _ := CMA.ListExhibitions(ExhibitionsFilter{
-		Opened_after: "2017-01-01",
-	})
-	if len(exhibits) > 0 {
-		fmt.Println(exhibits[0].Title)
-	}
-}
