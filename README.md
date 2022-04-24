@@ -37,7 +37,7 @@ artworks, meta := CMA.ListArtworks(cmart.ArtworksFilter{
     Created_after:            2019,
     African_american_artists: true,
 })
-if meta.Total > 0 {
+if len(artworks) > 0 {
     fmt.Println(artworks[0].Title)
 }
 ```
