@@ -19,7 +19,7 @@ func printUsage(bin string, cmd string, sub string, err string) {
 
 func main() {
 	// Setup RestApi Handler
-	CMA := cmart.NewRestApi()
+	CMA := cmart.NewCmaApi()
 	bin := os.Args[0]
 
 	// CLI Arguments

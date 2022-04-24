@@ -1,3 +1,5 @@
+// Provides a client for the Cleveland Museum of Art Open Access API.
+// https://openaccess-api.clevelandart.org/
 package cmart
 
 import (
@@ -12,56 +14,15 @@ import (
 	"github.com/carlmjohnson/requests"
 )
 
-type ResponseInfo struct {
-	Total int
-	// TODO Parameters []Something
+// Create new CMA API client
+func NewCmaApi() RestApi {
+	var api RestApi
+	api.Baseurl = "https://openaccess-api.clevelandart.org/api"
+	api.Get = api.call
+	return api
 }
 
-type ArtworksResponse struct {
-	Data []Artwork
-	Info ResponseInfo
-}
-
-type ArtworkResponse struct {
-	Data Artwork
-}
-
-type CreatorsResponse struct {
-	Data []Creator
-	Info ResponseInfo
-}
-
-type CreatorResponse struct {
-	Data Creator
-}
-
-type ExhibitionsResponse struct {
-	Data []Exhibition `json:",omitempty"`
-	Info struct {
-		Total int
-		// TODO Parameters []Something
-	}
-}
-
-type ExhibitionResponse struct {
-	Data Exhibition   `json:",omitempty"`
-	Info ResponseInfo `json:",omitempty"`
-}
-
-type Creator struct {
-	Id          int       `json:",omitempty"`
-	Artworks    []Artwork `json:",omitempty"`
-	Biography   string    `json:",omitempty"`
-	Birth_year  string    `json:",omitempty"`
-	Created_at  string    `json:",omitempty"`
-	Death_year  string    `json:",omitempty"`
-	Description string    `json:",omitempty"`
-	Name        string    `json:",omitempty"`
-	Nationality string    `json:",omitempty"`
-	Role        string    `json:",omitempty"`
-	Updated_at  string    `json:",omitempty"`
-}
-
+// Top-level API response object
 type Artwork struct {
 	Id                          int          `json:",omitempty"`
 	Accession_number            string       `json:",omitempty"`
@@ -128,18 +89,22 @@ type Artwork struct {
 	// Related_works []SomeType {}
 }
 
-type Citation struct {
-	Citation    string `json:",omitempty"`
-	Page_number string `json:",omitempty"`
-	Url         string `json:",omitempty"`
+// Top-level API response object
+type Creator struct {
+	Id          int       `json:",omitempty"`
+	Artworks    []Artwork `json:",omitempty"`
+	Biography   string    `json:",omitempty"`
+	Birth_year  string    `json:",omitempty"`
+	Created_at  string    `json:",omitempty"`
+	Death_year  string    `json:",omitempty"`
+	Description string    `json:",omitempty"`
+	Name        string    `json:",omitempty"`
+	Nationality string    `json:",omitempty"`
+	Role        string    `json:",omitempty"`
+	Updated_at  string    `json:",omitempty"`
 }
 
-type Dimension struct {
-	Depth  float64 `json:",omitempty"`
-	Height float64 `json:",omitempty"`
-	Width  float64 `json:",omitempty"`
-}
-
+// Top-level API response object
 type Exhibition struct {
 	Id           int       `json:",omitempty"`
 	Artworks     []Artwork `json:",omitempty"`
@@ -153,6 +118,21 @@ type Exhibition struct {
 	Venues       []Venue   `json:",omitempty"`
 }
 
+// Nested API response object
+type Citation struct {
+	Citation    string `json:",omitempty"`
+	Page_number string `json:",omitempty"`
+	Url         string `json:",omitempty"`
+}
+
+// Nested API response object
+type Dimension struct {
+	Depth  float64 `json:",omitempty"`
+	Height float64 `json:",omitempty"`
+	Width  float64 `json:",omitempty"`
+}
+
+// Nested API response object
 type Image struct {
 	Filename string `json:",omitempty"`
 	Filesize string `json:",omitempty"`
@@ -161,6 +141,7 @@ type Image struct {
 	Width    string `json:",omitempty"`
 }
 
+// Nested API response object
 type Provenance struct {
 	Citations   []string `json:",omitempty"`
 	Date        string   `json:",omitempty"`
@@ -168,6 +149,7 @@ type Provenance struct {
 	Footnotes   []string `json:",omitempty"`
 }
 
+// Nested API response object
 type Venue struct {
 	Venue_id   int    `json:",omitempty"`
 	Name       string `json:",omitempty"`
@@ -176,34 +158,34 @@ type Venue struct {
 }
 
 type ArtworksFilter struct {
-	African_american_artists bool   //Filters by works created by African American artists.
-	Artists                  string //Filter by name of artist.
-	Catalogue_raisonne       string //Filter by catalogue raisonne.
-	Cc0                      bool   //Filters by works that have share license cc0.
-	Cia_alumni_artists       bool   //Filters by works created by Cleveland Institute of Art alumni.
-	Citations                string //Keyword search against the citations field.
-	Copyrighted              bool   //Filters by works that have some sort of copyright.
-	Created_after            int    //Returns artworks created after the year specified. Negative years are BCE.
-	Created_after_age        int    //Filters by artworks that were created by artists older than the provided value in years at time of creation.
-	Created_before           int    //Returns artworks created before the year specified. Negative years are BCE.
-	Created_before_age       int    //Filters by artworks that were created by artists younger than the provided value in years at time of creation.
-	Credit                   string //Filter by credit line.
-	Currently_on_loan        bool   //Filters by works that are currently on loan.
-	Currently_on_view        bool   //Filters by works that are currently on view at CMA.
-	Department               string //Filter by department. List of valid departments in Appendix B.
-	Exhibition_history       string //Filter by exhibition history of artwork.
-	Female_artists           bool   //Filters by artworks created by female artists.
-	Has_image                int    //0 or 1. Filter to return only artworks that have a web image asset. (synonymous with the deprecated field web_image)
-	Limit                    int    //Limit for number of results. If no limit provided, API will return the maximum (1000) number of records.
-	May_show_artists         bool   //Filters by works exhibited in Cleveland Museum of Art May Shows
-	Medium                   string //Filter by artwork medium.
-	Nazi_era_provenance      bool   //Filters by nazi-era provenance.
-	Provenance               string //Filter by provenance of artwork
-	Q                        string //Any keyword or phrase that searches against title, creator, artwork description, and several other meaningful fields related to the artwork.
-	Recently_acquired        bool   //Filters by artworks acquired by the museum in the last three years.
-	Skip                     int    //Offset index for results.
-	Title                    string //Filter by title of artwork.
-	Type                     string //Filter by artwork types. List of valid types in Appendix C.
+	African_american_artists bool   // Filters by works created by African American artists.
+	Artists                  string // Filter by name of artist.
+	Catalogue_raisonne       string // Filter by catalogue raisonne.
+	Cc0                      bool   // Filters by works that have share license cc0.
+	Cia_alumni_artists       bool   // Filters by works created by Cleveland Institute of Art alumni.
+	Citations                string // Keyword search against the citations field.
+	Copyrighted              bool   // Filters by works that have some sort of copyright.
+	Created_after            int    // Returns artworks created after the year specified. Negative years are BCE.
+	Created_after_age        int    // Filters by artworks that were created by artists older than the provided value in years at time of creation.
+	Created_before           int    // Returns artworks created before the year specified. Negative years are BCE.
+	Created_before_age       int    // Filters by artworks that were created by artists younger than the provided value in years at time of creation.
+	Credit                   string // Filter by credit line.
+	Currently_on_loan        bool   // Filters by works that are currently on loan.
+	Currently_on_view        bool   // Filters by works that are currently on view at CMA.
+	Department               string // Filter by department. List of valid departments in Appendix B.
+	Exhibition_history       string // Filter by exhibition history of artwork.
+	Female_artists           bool   // Filters by artworks created by female artists.
+	Has_image                int    // 0 or 1. Filter to return only artworks that have a web image asset. (synonymous with the deprecated field web_image)
+	Limit                    int    // Limit for number of results. If no limit provided, API will return the maximum (1000) number of records.
+	May_show_artists         bool   // Filters by works exhibited in Cleveland Museum of Art May Shows
+	Medium                   string // Filter by artwork medium.
+	Nazi_era_provenance      bool   // Filters by nazi-era provenance.
+	Provenance               string // Filter by provenance of artwork
+	Q                        string // Any keyword or phrase that searches against title, creator, artwork description, and several other meaningful fields related to the artwork.
+	Recently_acquired        bool   // Filters by artworks acquired by the museum in the last three years.
+	Skip                     int    // Offset index for results.
+	Title                    string // Filter by title of artwork.
+	Type                     string // Filter by artwork types. List of valid types in Appendix C.
 	/* TODO
 	dimensions	float64,float64,float64	Filter artworks by dimensions with the unit of measurement being meters. This filter is somewhat tricky, as the terminolgy for describing object dimensions varies from object to object (for example coins have diameters, swords have lengths, and necklaces have heights). An object's most descriptive dimension (whatever you think is the best way to describe it in meters) is generally put in the first part of the comma seperated list of dimensions. A default value of 20cm will be used if no value is provided for a dimension in the list. The second and third dimensions places are interchangable and describe a square that an object's remaining dimensions could fit inside. The dimensions filter returns objects with a fault tolerance of 20cm on all dimensions.
 	dimensions_max	float64,float64,float64	Filter artworks to return all works that can fit inside a box defined by provided 3 values with the unit of measurement being meters. Place the most descriptive dimension in the first value, and any remaining dimensions in the second two values. If no value is provided for a dimension, a default value of 20cm is used. The dimensions_max filter has a fault tolerance of 0 on all dimensions, and will not return objects that cannot fit in the described box.
@@ -212,43 +194,44 @@ type ArtworksFilter struct {
 }
 
 type CreatorsFilter struct {
-	Biography         string //Filter by a keyword in creator biography.
-	Birth_year        int    //Filter by exact match on creator's birth year.
-	Birth_year_after  int    //Filter by creators born after a certain year.
-	Birth_year_before int    //Filter by creators born before a certain year.
-	Death_year        int    //Filter by exact match on creator's death year.
-	Death_year_after  int    //Filter by creators who have died after a certain year.
-	Death_year_before int    //Filter by creators who have died before a certain year.
-	Limit             int    //Limit for number of results. If no limit provided, API will return the maximum (100) number of records.
-	Name              string //Filter by matches or partial matches to the name of any creator.
-	Nationality       string //Filter by a keyword in creator nationality, e.g. 'French'.
-	Skip              int    //Offset index for results.
+	Biography         string // Filter by a keyword in creator biography.
+	Birth_year        int    // Filter by exact match on creator's birth year.
+	Birth_year_after  int    // Filter by creators born after a certain year.
+	Birth_year_before int    // Filter by creators born before a certain year.
+	Death_year        int    // Filter by exact match on creator's death year.
+	Death_year_after  int    // Filter by creators who have died after a certain year.
+	Death_year_before int    // Filter by creators who have died before a certain year.
+	Limit             int    // Limit for number of results. If no limit provided, API will return the maximum (100) number of records.
+	Name              string // Filter by matches or partial matches to the name of any creator.
+	Nationality       string // Filter by a keyword in creator nationality, e.g. 'French'.
+	Skip              int    // Offset index for results.
 }
 
 type ExhibitionsFilter struct {
-	Closed_after  string //Filter exhibitions closed after a certain data. (date in YYYY-MM-DD format, e.g. 1974-01-01)
-	Closed_before string //Filter exhibitions closed before a certain data. (date in YYYY-MM-DD format, e.g. 1974-01-01)
-	Limit         int    //Limit for number of results. If no limit provided, API will return the maximum (100) number of records.
-	Opened_after  string //Filter exhibitions opened after a certain data. (date in YYYY-MM-DD format, e.g. 1974-01-01)
-	Opened_before string //Filter exhibitions opened before a certain data. (date in YYYY-MM-DD format, e.g. 1974-01-01)
-	Organizer     string //Filter by exhibition organizer.
-	Skip          int    //Offset index for results.
-	Title         string //Filter by matches or partial matches to the title of an exhibition.
-	Venue         string //Filter by exhibitioned opened in certain venues.
+	Closed_after  string // Filter exhibitions closed after a certain data. (date in YYYY-MM-DD format, e.g. 1974-01-01)
+	Closed_before string // Filter exhibitions closed before a certain data. (date in YYYY-MM-DD format, e.g. 1974-01-01)
+	Limit         int    // Limit for number of results. If no limit provided, API will return the maximum (100) number of records.
+	Opened_after  string // Filter exhibitions opened after a certain data. (date in YYYY-MM-DD format, e.g. 1974-01-01)
+	Opened_before string // Filter exhibitions opened before a certain data. (date in YYYY-MM-DD format, e.g. 1974-01-01)
+	Organizer     string // Filter by exhibition organizer.
+	Skip          int    // Offset index for results.
+	Title         string // Filter by matches or partial matches to the title of an exhibition.
+	Venue         string // Filter by exhibitioned opened in certain venues.
 }
 
+// API Response Metadata
+type ResponseInfo struct {
+	Total int
+	// TODO Parameters []Something
+}
+
+// Generic API client
 type RestApi struct {
 	Baseurl string
 	Get     func(string, interface{})
 }
 
-func NewRestApi() RestApi {
-	var api RestApi
-	api.Baseurl = "https://openaccess-api.clevelandart.org/api"
-	api.Get = api.call
-	return api
-}
-
+// GET request
 func (api RestApi) call(path string, response interface{}) {
 	err := requests.
 		URL(api.Baseurl + path).
@@ -260,23 +243,31 @@ func (api RestApi) call(path string, response interface{}) {
 	}
 }
 
+// List artworks with filters
 func (api RestApi) ListArtworks(filter ArtworksFilter) ([]Artwork, ResponseInfo) {
 	params := buildParams(filter)
-	var resp ArtworksResponse
+	var resp struct {
+		Data []Artwork
+		Info ResponseInfo
+	}
 	path := fmt.Sprintf("/artworks/?%v", params)
 	api.Get(path, &resp)
 	return resp.Data, resp.Info
 }
 
 func (api RestApi) GetArtworkById(artwork_id int) Artwork {
-	var resp ArtworkResponse
+	var resp struct {
+		Data Artwork
+	}
 	path := fmt.Sprintf("/artworks/%v", artwork_id)
 	api.Get(path, &resp)
 	return resp.Data
 }
 
 func (api RestApi) GetArtworkByAccessionNbr(accession_nbr float64) Artwork {
-	var resp ArtworkResponse
+	var resp struct {
+		Data Artwork
+	}
 	path := fmt.Sprintf("/artworks/%v", accession_nbr)
 	api.Get(path, &resp)
 	return resp.Data
@@ -284,14 +275,19 @@ func (api RestApi) GetArtworkByAccessionNbr(accession_nbr float64) Artwork {
 
 func (api RestApi) ListCreators(filter CreatorsFilter) ([]Creator, ResponseInfo) {
 	params := buildParams(filter)
-	var resp CreatorsResponse
+	var resp struct {
+		Data []Creator
+		Info ResponseInfo
+	}
 	path := fmt.Sprintf("/creators/?%v", params)
 	api.Get(path, &resp)
 	return resp.Data, resp.Info
 }
 
 func (api RestApi) GetCreatorById(creator_id int) Creator {
-	var resp CreatorResponse
+	var resp struct {
+		Data Creator
+	}
 	path := fmt.Sprintf("/creators/%v", creator_id)
 	api.Get(path, &resp)
 	return resp.Data
@@ -299,19 +295,29 @@ func (api RestApi) GetCreatorById(creator_id int) Creator {
 
 func (api RestApi) ListExhibitions(filter ExhibitionsFilter) ([]Exhibition, ResponseInfo) {
 	params := buildParams(filter)
-	var resp ExhibitionsResponse
+	var resp struct {
+		Data []Exhibition
+		Info struct {
+			Total int
+			// TODO Parameters []Something
+		}
+	}
 	path := fmt.Sprintf("/exhibitions/?%v", params)
 	api.Get(path, &resp)
 	return resp.Data, resp.Info
 }
 
 func (api RestApi) GetExhibitionById(exhibit_id int) Exhibition {
-	var resp ExhibitionResponse
+	var resp struct {
+		Data Exhibition
+		Info ResponseInfo
+	}
 	path := fmt.Sprintf("/exhibitions/%v", exhibit_id)
 	api.Get(path, &resp)
 	return resp.Data
 }
 
+// Check if filter param should be date formatted
 func isDateParam(paramKey string) bool {
 	dateParams := []string{"opened_after", "opened_before", "closed_after", "closed_before"}
 	for _, p := range dateParams {
@@ -322,6 +328,7 @@ func isDateParam(paramKey string) bool {
 	return false
 }
 
+// Compose URL query parameters from filter
 func buildParams(filter interface{}) string {
 	params := ""
 	v := reflect.ValueOf(filter)
@@ -340,6 +347,7 @@ func buildParams(filter interface{}) string {
 			paramVal := fmt.Sprintf("%v", val)
 			paramKey := strings.ToLower(prop.Field(i).Name)
 			if isDateParam(paramKey) {
+				// Format param as date string, yyyy-mm-dd
 				d, err := time.Parse("2006-01-02", fmt.Sprintf("%v", val))
 				if err != nil {
 					fmt.Printf("Bad %v, expected yyyy-mm-dd: '%v'\n", paramKey, val)

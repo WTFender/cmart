@@ -8,7 +8,7 @@ import (
 	"github.com/carlmjohnson/requests"
 )
 
-func NewMockRestApi() RestApi {
+func NewMockCmaApi() RestApi {
 	var api RestApi
 	api.Baseurl = "https://openaccess-api.clevelandart.org/api"
 	api.Get = api.mockCall
@@ -28,7 +28,7 @@ func (api RestApi) mockCall(path string, response interface{}) {
 
 func TestListArtworks(t *testing.T) {
 	limit := 3
-	mockCMA := NewMockRestApi()
+	mockCMA := NewMockCmaApi()
 	artworks, _ := mockCMA.ListArtworks(ArtworksFilter{
 		Limit: limit,
 	})
@@ -40,7 +40,7 @@ func TestListArtworks(t *testing.T) {
 
 func TestListCreators(t *testing.T) {
 	limit := 3
-	mockCMA := NewMockRestApi()
+	mockCMA := NewMockCmaApi()
 	creators, _ := mockCMA.ListCreators(CreatorsFilter{
 		Limit: limit,
 	})
@@ -52,7 +52,7 @@ func TestListCreators(t *testing.T) {
 
 func TestListExhibits(t *testing.T) {
 	limit := 3
-	mockCMA := NewMockRestApi()
+	mockCMA := NewMockCmaApi()
 	exhibits, _ := mockCMA.ListExhibitions(ExhibitionsFilter{
 		Limit: limit,
 	})
@@ -63,7 +63,7 @@ func TestListExhibits(t *testing.T) {
 }
 
 func TestGetArtwork(t *testing.T) {
-	mockCMA := NewMockRestApi()
+	mockCMA := NewMockCmaApi()
 	artworkIds := []int{110180, 92937, 94979}
 	for _, aid := range artworkIds {
 		artwork := mockCMA.GetArtworkById(aid)
@@ -75,7 +75,7 @@ func TestGetArtwork(t *testing.T) {
 }
 
 func TestGetCreator(t *testing.T) {
-	mockCMA := NewMockRestApi()
+	mockCMA := NewMockCmaApi()
 	creatorIds := []int{1859, 290228, 1833}
 	for _, cid := range creatorIds {
 		creator := mockCMA.GetCreatorById(cid)
@@ -87,7 +87,7 @@ func TestGetCreator(t *testing.T) {
 }
 
 func TestGetExhibit(t *testing.T) {
-	mockCMA := NewMockRestApi()
+	mockCMA := NewMockCmaApi()
 	exhibitsIds := []int{290449, 375733, 312462}
 	for _, cid := range exhibitsIds {
 		exhibit := mockCMA.GetExhibitionById(cid)
