@@ -33,7 +33,7 @@ artwork := CMA.GetArtworkById(111811)
 fmt.Println(artwork.Title)
 
 // List Artworks, Creators, and Exhibits; optionally apply filters
-artworks, meta := CMA.ListArtworks(ArtworksFilter{
+artworks, meta := CMA.ListArtworks(cmart.ArtworksFilter{
     Created_after:            2019,
     African_american_artists: true,
 })
