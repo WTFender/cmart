@@ -7,8 +7,8 @@ Usage
 cmart.exe {artwork,creator,exhibit} {get,list}
 ```
 Example
-```json
-$ cmart.exe artwork get -id 111811
+```jsonc
+// cmart.exe artwork get -id 111811
 {
   "Id": 111811,
   "Accession_number": "1930.331",
@@ -18,7 +18,26 @@ $ cmart.exe artwork get -id 111811
   "Creation_date_latest": 1099,
   "Creditline": "Purchase from the J. H. Wade Fund",
   "Current_location": "244 Indian and Southeast Asian",
-  "Fun_fact": "The trampled figure holds a serpent in his left hand and with his right points up to Shiva.",
-  ...snip...
+  "Fun_fact": "The trampled figure holds a serpent in his left hand and with his right points up to Shiva."
+  // ...snip...
+}
+```
+
+### Package
+```golang
+// Create API client
+CMA := cmart.NewRestApi()
+
+// Get an Artwork, Creator, or Exhibit by ID
+artwork := CMA.GetArtworkById(111811)
+fmt.Println(artwork.Title)
+
+// List Artworks, Creators, and Exhibits; optionally apply filters
+artworks, meta := CMA.ListArtworks(ArtworksFilter{
+    Created_after:            2019,
+    African_american_artists: true,
+})
+if meta.Total > 0 {
+    fmt.Println(artworks[0].Title)
 }
 ```
