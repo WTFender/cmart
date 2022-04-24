@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/WTFender/cmart"
+	"github.com/wtfender/cmart"
 )
 
 func printUsage(bin string, cmd string, sub string, err string) {

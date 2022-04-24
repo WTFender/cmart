@@ -1,4 +1,4 @@
-module github.com/WTFender/cmart
+module github.com/wtfender/cmart
 
 go 1.18
 
