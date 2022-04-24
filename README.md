@@ -26,7 +26,7 @@ Example
 ### Package
 ```golang
 // Create API client
-CMA := cmart.NewRestApi()
+CMA := cmart.NewCmaApi()
 
 // Get an Artwork, Creator, or Exhibit by ID
 artwork := CMA.GetArtworkById(111811)
