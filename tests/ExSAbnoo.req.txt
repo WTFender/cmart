@@ -1,0 +1,3 @@
+GET /api/exhibitions/312462 HTTP/1.1
+Host: openaccess-api.clevelandart.org
+

@@ -1,0 +1,20 @@
+HTTP/1.1 200 OK
+Content-Length: 614
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, cache-control
+Access-Control-Allow-Methods: GET, OPTIONS, HEAD
+Access-Control-Allow-Origin: *
+Connection: keep-alive
+Content-Security-Policy: frame-ancestors 'none'
+Content-Type: application/json
+Date: Sun, 24 Apr 2022 18:33:24 GMT
+Expect-Ct: enforce,max-age=86400
+Referrer-Policy: no-referrer-when-downgrade
+Server: nginx
+Set-Cookie: cid=Csk8tmJll/QS2Qa6Azk0Ag==; expires=Tue, 23-Apr-24 18:33:24 GMT; path=/
+Strict-Transport-Security: max-age=31536000;includeSubDomains
+X-Cache-Status: MISS
+X-Content-Type-Options: nosniff
+X-Frame-Options: deny
+X-Xss-Protection: 1;mode=block
+
+{"data": {"created_at": "2020-11-04 19:01:05.195000", "updated_at": "2022-01-04 18:23:09.490000", "name": "Georges Gorvel (French, 1866-1938)", "nationality": "French", "description": "Georges Gorvel (French, 1866-1938)", "biography": null, "birth_year": "1866", "death_year": "1938", "id": 290228, "artworks": [{"id": 79141, "accession_number": "2016.174", "title": "Portrait of Charles Dickens", "tombstone": "Portrait of Charles Dickens. Georges Gorvel (French, 1866-1938). Drypoint; The Cleveland Museum of Art, Bequest of Elizabeth Carroll Shearer 2016.174", "url": "https://clevelandart.org/art/2016.174"}]}}

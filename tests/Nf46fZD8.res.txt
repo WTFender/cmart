@@ -1,0 +1,24 @@
+HTTP/1.1 200 OK
+Transfer-Encoding: chunked
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, cache-control
+Access-Control-Allow-Methods: GET, OPTIONS, HEAD
+Access-Control-Allow-Origin: *
+Connection: keep-alive
+Content-Security-Policy: frame-ancestors 'none'
+Content-Type: application/json
+Date: Sun, 24 Apr 2022 18:33:24 GMT
+Expect-Ct: enforce,max-age=86400
+Referrer-Policy: no-referrer-when-downgrade
+Server: nginx
+Set-Cookie: cid=Csk8tmJll/QS2Qa6Azk2Ag==; expires=Tue, 23-Apr-24 18:33:24 GMT; path=/
+Strict-Transport-Security: max-age=31536000;includeSubDomains
+Vary: Accept-Encoding
+X-Cache-Status: MISS
+X-Content-Type-Options: nosniff
+X-Frame-Options: deny
+X-Xss-Protection: 1;mode=block
+
+b0b
+{"data": {"created_at": "2020-11-04 19:00:19.954000", "updated_at": "2022-04-22 09:01:34.698000", "title": "Korean Gallery 236 Rotation", "description": null, "organizer": "The Cleveland Museum of Art", "opening_date": "2017-01-13 05:00:00", "closing_date": "2017-07-10 04:00:00", "venues": [{"venue_id": 4712, "name": "The Cleveland Museum of Art", "start_date": "2017-01-13 05:00:00", "end_date": "2017-07-10 04:00:00"}], "id": 290449, "artworks": [{"id": 86399, "accession_number": "2015.138", "title": "Orchids and Rocks", "tombstone": "Orchids and Rocks, 1897-98. Yi Ha-eung (Korean, 1820-1898). Eight-panel folding screen; ink on silk; overall: 185 x 52.6 cm (72 13/16 x 20 11/16 in.); each panel: 111.9 x 1.5 cm (44 1/16 x 9/16 in.). The Cleveland Museum of Art, John L. Severance Fund 2015.138", "url": "https://clevelandart.org/art/2015.138"}, {"id": 151444, "accession_number": "1983.28", "title": "Jar", "tombstone": "Jar, 1700s. Korea, Joseon dynasty (1392-1910). Glazed porcelain; overall: 34.3 cm (13 1/2 in.); outer diameter: 31.6 cm (12 7/16 in.). The Cleveland Museum of Art, Purchase from the J. H. Wade Fund 1983.28", "url": "https://clevelandart.org/art/1983.28"}, {"id": 153383, "accession_number": "1986.69", "title": "Jar with Dragon and Clouds Design", "tombstone": "Jar with Dragon and Clouds Design, late 1600s. Korea, Joseon dynasty (1392-1910). Porcelain with underglaze iron; diameter of base: 13.7 cm (5 3/8 in.); overall: 34.7 cm (13 11/16 in.). The Cleveland Museum of Art, Leonard C. Hanna, Jr. Fund 1986.69", "url": "https://clevelandart.org/art/1986.69"}, {"id": 153403, "accession_number": "1986.87", "title": "Jar with Design in Underglaze Iron", "tombstone": "Jar with Design in Underglaze Iron, 1800s-1900s. Korea, Joseon dynasty (1392-1910). Porcelain with underglaze iron; outer diameter: 34.2 cm (13 7/16 in.); overall: 33 cm (13 in.). The Cleveland Museum of Art, L. E. Holden Fund 1986.87", "url": "https://clevelandart.org/art/1986.87"}, {"id": 156305, "accession_number": "1992.138", "title": "Poem on Plum", "tombstone": "Poem on Plum, 1700s-1800s. Copy after Yi Hwang (Korean, 1501-1570). Hanging scroll; ink on paper; overall: 115 x 68.2 cm (45 1/4 x 26 7/8 in.); painting only: 46 x 52.7 cm (18 1/8 x 20 3/4 in.). The Cleveland Museum of Art, Seventy-fifth anniversary gift of The Honorable Joseph P. Carroll and Roberta Carroll, M.D. 1992.138", "url": "https://clevelandart.org/art/1992.138"}, {"id": 159205, "accession_number": "1995.39", "title": "Dream Jar", "tombstone": "Dream Jar, 1994. Shin Sangho  (Korean, b. 1947). Stoneware with carved, stamped designs, and inlaid slip under celadon glaze; outer diameter: 32.6 cm (12 13/16 in.); overall: 35.5 cm (14 in.). The Cleveland Museum of Art, Gift of the Artist 1995.39", "url": "https://clevelandart.org/art/1995.39"}]}}
+0
+
